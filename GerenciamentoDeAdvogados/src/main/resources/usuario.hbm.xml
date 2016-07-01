@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping>
+	<class name="br.com.unipe.gerenciamentoAdvogados.model.vo.Usuario"
+		table="usuario">
+		<id name="id" type="long">
+			<generator class="native"></generator>
+		</id>
+		<property name="createdOn" type="timestamp"></property>
+		<property name="nome" type="string"></property>
+		<property name="email" type="string"></property>
+		<property name="telefone" type="string"></property>
+		<property name="username" type="string"></property>
+		<property name="password" type="string"></property>
+
+		<many-to-one name="autorizacao" column="autorizacao_id"
+			class="br.com.unipe.gerenciamentoAdvogados.model.vo.Autorizacao">
+		</many-to-one>
+	</class>
+</hibernate-mapping>

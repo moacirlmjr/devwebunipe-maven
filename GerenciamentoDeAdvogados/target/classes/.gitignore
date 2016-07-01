@@ -1,1 +1,5 @@
+/hibernate.cfg.xml
 /br/
+/usuario.hbm.xml
+/autorizacao.hbm.xml
+/advogado.hbm.xml
