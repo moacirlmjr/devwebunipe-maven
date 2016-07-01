@@ -7,10 +7,26 @@
 			<generator class="native"></generator>
 		</id>
 		<property name="createdOn" type="timestamp"></property>
-		<property name="numeroOab" type="string"></property>		
+		<property name="numeroOab" type="string"></property>
 
 		<many-to-one name="usuario" column="usuario_id" unique="true"
 			class="br.com.unipe.gerenciamentoAdvogados.model.vo.Usuario">
 		</many-to-one>
+
+		<set name="anuidade" inverse="true">
+			<key>
+				<column name="advogado_id" not-null="true"></column>
+			</key>
+			<one-to-many class="br.com.unipe.gerenciamentoAdvogados.model.vo.Anuidade" />
+		</set>
+
+		<set name="eventos" table="advogado_evento" inverse="true">
+			<key>
+				<column name="advogado_id" not-null="true"></column>
+			</key>
+			<many-to-many class="br.com.unipe.gerenciamentoAdvogados.model.vo.Evento">
+				<column name="evento_id" not-null="true"></column>
+			</many-to-many>
+		</set>
 	</class>
 </hibernate-mapping>

@@ -17,5 +17,7 @@
 		<mapping resource="autorizacao.hbm.xml" />
 		<mapping resource="usuario.hbm.xml" />
 		<mapping resource="advogado.hbm.xml" />
+		<mapping resource="anuidade.hbm.xml" />
+		<mapping resource="evento.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

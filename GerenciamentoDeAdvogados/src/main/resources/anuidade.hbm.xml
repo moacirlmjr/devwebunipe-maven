@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping>
+	<class name="br.com.unipe.gerenciamentoAdvogados.model.vo.Anuidade"
+		table="anuidade">
+		<id name="id" type="long">
+			<generator class="native"></generator>
+		</id>
+		<property name="createdOn" type="timestamp"></property>
+		<property name="vencimento" type="timestamp"></property>
+		<property name="ano" type="integer"></property>
+		<property name="nossoNumero" type="string"></property>
+		<property name="valor" type="big_decimal"></property>
+
+		<many-to-one name="advogado" column="advogado_id"
+			class="br.com.unipe.gerenciamentoAdvogados.model.vo.Advogado">
+		</many-to-one>
+	</class>
+</hibernate-mapping>
