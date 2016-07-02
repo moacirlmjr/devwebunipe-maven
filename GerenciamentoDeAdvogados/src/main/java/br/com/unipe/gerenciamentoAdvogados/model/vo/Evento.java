@@ -20,7 +20,7 @@ public class Evento extends EntityMaster {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar data;
 
-	@ManyToMany(targetEntity = Advogado.class)
+	@ManyToMany(targetEntity = Advogado.class, mappedBy="eventos")
 	private Set<Advogado> advogados;
 
 	public String getNome() {
