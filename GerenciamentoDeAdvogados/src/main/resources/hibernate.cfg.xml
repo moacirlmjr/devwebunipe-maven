@@ -14,10 +14,5 @@
 		<property name="hibernate.show_sql">true</property>
 		<property name="hibernate.format_sql">true</property>
 
-		<mapping resource="autorizacao.hbm.xml" />
-		<mapping resource="usuario.hbm.xml" />
-		<mapping resource="advogado.hbm.xml" />
-		<mapping resource="anuidade.hbm.xml" />
-		<mapping resource="evento.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

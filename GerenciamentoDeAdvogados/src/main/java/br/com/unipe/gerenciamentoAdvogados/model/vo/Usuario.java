@@ -2,33 +2,32 @@ package br.com.unipe.gerenciamentoAdvogados.model.vo;
 
 import java.util.Date;
 
-public class Usuario {
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-	private long id;
-	private Date createdOn;
+import br.com.unipe.gerenciamentoAdvogados.model.TipoPessoa;
+
+@Entity
+public class Usuario extends EntityMaster {
+
 	private String nome;
 	private String email;
 	private String telefone;
 	private String username;
 	private String password;
 
+	@Enumerated(EnumType.STRING)
+	private TipoPessoa tipoPessoa;
+
+	@OneToOne(targetEntity = Autorizacao.class)
 	private Autorizacao autorizacao;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
 
 	public String getNome() {
 		return nome;

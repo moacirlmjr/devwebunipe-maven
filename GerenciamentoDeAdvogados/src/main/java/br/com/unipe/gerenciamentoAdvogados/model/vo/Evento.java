@@ -4,31 +4,24 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
-public class Evento {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-	private long id;
-	private Date createdOn;
+@Entity
+public class Evento extends EntityMaster {
 
 	private String nome;
+
+	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar data;
 
+	@ManyToMany(targetEntity = Advogado.class)
 	private Set<Advogado> advogados;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
 
 	public String getNome() {
 		return nome;

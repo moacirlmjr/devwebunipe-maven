@@ -1,32 +1,28 @@
 package br.com.unipe.gerenciamentoAdvogados.model.vo;
 
-import java.util.Date;
 import java.util.Set;
 
-public class Advogado {
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-	private long id;
-	private Date createdOn;
+@Entity
+public class Advogado extends EntityMaster {
+
 	private String numeroOab;
+
+	@OneToOne(targetEntity = Usuario.class, optional = false)
 	private Usuario usuario;
+
+	@OneToMany(targetEntity = Anuidade.class, mappedBy = "advogado")
 	private Set<Anuidade> anuidade;
+
+	@ManyToMany(targetEntity = Evento.class)
+	@JoinTable(name = "evento_advogado", joinColumns = @JoinColumn(name = "advogado_id"), inverseJoinColumns = @JoinColumn(name = "evento_id"))
 	private Set<Evento> eventos;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
 
 	public String getNumeroOab() {
 		return numeroOab;
