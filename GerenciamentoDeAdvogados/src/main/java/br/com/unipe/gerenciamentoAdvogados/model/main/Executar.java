@@ -27,7 +27,7 @@ public class Executar {
 			System.out.println(a.getNome());
 			Autorizacao authBD = dao.findById(a.getId());
 			authBD.setNome(a.getNome()+":ADMIN");
-			dao.update(authBD);
+			dao.update2(authBD);
 
 		}
 
