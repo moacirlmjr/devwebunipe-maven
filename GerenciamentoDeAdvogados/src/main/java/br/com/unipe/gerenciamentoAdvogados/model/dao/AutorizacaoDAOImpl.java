@@ -2,100 +2,90 @@ package br.com.unipe.gerenciamentoAdvogados.model.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import br.com.unipe.gerenciamentoAdvogados.model.util.EntityManagerUtil;
 import br.com.unipe.gerenciamentoAdvogados.model.util.HibernateUtil;
 import br.com.unipe.gerenciamentoAdvogados.model.vo.Autorizacao;
 
 public class AutorizacaoDAOImpl {
 
-	public Long create(Autorizacao autorizacao) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
+	public void create(Autorizacao autorizacao) {
+		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			Long idBd = (Long) session.save(autorizacao);
-			tx.commit();
-			return idBd;
+			em.getTransaction().begin();
+			em.persist(autorizacao);
+			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
 			}
 			e.printStackTrace();
-			return null;
 		} finally {
-			session.close();
+			em.close();
 		}
 	}
 
 	public void update(Autorizacao autorizacao) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
+		EntityManager em = EntityManagerUtil.
+				getEntityManagerFactory().createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			session.update(autorizacao);
-			tx.commit();
+			em.getTransaction().begin();
+			em.merge(autorizacao);
+			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
 			}
 			e.printStackTrace();
 		} finally {
-			session.close();
+			em.close();
 		}
 	}
 
 	public void delete(Autorizacao autorizacao) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
+		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			session.delete(autorizacao);
-			tx.commit();
+			em.getTransaction().begin();
+			em.remove(autorizacao);
+			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
 			}
 			e.printStackTrace();
 		} finally {
-			session.close();
+			em.close();
 		}
 	}
 
 	public Autorizacao findById(Long id) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
+		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			return session.get(Autorizacao.class, id);
+			em.getTransaction().begin();
+			return em.find(Autorizacao.class, id);
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
 			e.printStackTrace();
 		} finally {
-			session.close();
+			em.close();
 		}
 		return null;
 	}
 
 	public List<Autorizacao> listAll() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
+		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			Criteria c = session.createCriteria(Autorizacao.class);
-			return c.list();
+			em.getTransaction().begin();
+			return em.createQuery("From Autorizacao a").getResultList();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
 			e.printStackTrace();
 		} finally {
-			session.close();
+			em.close();
 		}
 		return null;
 	}

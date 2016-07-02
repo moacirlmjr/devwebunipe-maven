@@ -25,6 +25,14 @@ public class EntityMaster implements Serializable {
 	@Version
 	private int version;
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public Date getCreatedOn() {
 		return createdOn;
 	}
