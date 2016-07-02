@@ -17,7 +17,8 @@ public class Executar {
 		Long idAuthAdmin = dao.create(auth);
 
 		Autorizacao authBD = dao.findById(idAuthAdmin);
-		System.out.println(authBD.getNome());
+		authBD.setNome("ADMINVERSION2");
+		dao.update(authBD);
 
 		Autorizacao auth2 = new Autorizacao();
 		auth2.setCreatedOn(new Date());

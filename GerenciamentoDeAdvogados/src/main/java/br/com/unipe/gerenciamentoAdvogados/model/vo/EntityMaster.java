@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 @MappedSuperclass
 public class EntityMaster implements Serializable {
@@ -17,9 +18,12 @@ public class EntityMaster implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdOn;
+
+	@Version
+	private int version;
 
 	public Date getCreatedOn() {
 		return createdOn;
