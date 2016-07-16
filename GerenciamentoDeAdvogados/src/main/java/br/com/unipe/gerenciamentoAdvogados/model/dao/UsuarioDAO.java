@@ -4,4 +4,6 @@ import br.com.unipe.gerenciamentoAdvogados.model.vo.Usuario;
 
 public interface UsuarioDAO extends GenericDAO<Usuario, Long>{
 
+	public Usuario findByUsername(String sessionUserName);
+
 }

@@ -4,7 +4,7 @@
 <html>
 <body>
 	Seja Bem-vindo
-
+	<a href="j_spring_security_logout">Logout</a><br/>
 	<br />
 	<a href="prepararListarAutorizacao">Listar Autorização</a><br/>
 	<a href="prepararListarUsuario">Listar Usuário</a>

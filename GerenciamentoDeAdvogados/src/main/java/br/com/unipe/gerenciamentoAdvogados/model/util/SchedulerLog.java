@@ -13,7 +13,7 @@ public class SchedulerLog {
 	@Autowired
 	private AutorizacaoDAO autorizacaoDAO;
 	
-	@Scheduled(fixedRate=60000)
+//	@Scheduled(fixedRate=60000)
 	public void task(){
 		for(Autorizacao a: autorizacaoDAO.listAll()){
 			System.out.println(a.getNome());

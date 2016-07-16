@@ -3,8 +3,10 @@ package br.com.unipe.gerenciamentoAdvogados.model.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.unipe.gerenciamentoAdvogados.model.util.EntityManagerUtil;
 import br.com.unipe.gerenciamentoAdvogados.model.vo.Usuario;
@@ -12,80 +14,37 @@ import br.com.unipe.gerenciamentoAdvogados.model.vo.Usuario;
 @Repository
 public class UsuarioDAOImpl implements UsuarioDAO {
 
+	@PersistenceContext
+	protected EntityManager em;
+
+	@Transactional
 	public void create(Usuario usuario) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.persist(usuario);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
+		em.persist(usuario);
 	}
 
+	@Transactional
 	public void update(Usuario usuario) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.merge(usuario);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
+		em.merge(usuario);
 	}
 
+	@Transactional
 	public void delete(Usuario usuario) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.remove(usuario);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
+		em.remove(usuario);
 	}
 
+	@Transactional(readOnly = true)
 	public List<Usuario> listAll() {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			return em.createQuery("From Usuario a").getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-		return null;
+		return em.createQuery("From Usuario a").getResultList();
+	}
+
+	@Transactional(readOnly = true)
+	public Usuario findById(Long id) {
+		return em.find(Usuario.class, id);
 	}
 
 	@Override
-	public Usuario findById(Long id) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			return em.find(Usuario.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-		return null;
-
+	public Usuario findByUsername(String sessionUserName) {
+		return (Usuario) em.createQuery("From Usuario a where a.username=:" + sessionUserName).getSingleResult();
 	}
 
 }

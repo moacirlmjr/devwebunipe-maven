@@ -1,8 +1,11 @@
 package br.com.unipe.gerenciamentoAdvogados.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.unipe.gerenciamentoAdvogados.model.dao.AutorizacaoDAO;
@@ -26,7 +29,11 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping("/addUsuario")
-	public String cadastro(Usuario usuario){
+	public String cadastro(@Valid Usuario usuario, BindingResult result, Model model){
+		if(result.hasErrors()){
+			model.addAttribute("autorizacoes", autorizacaoDAO.listAll());
+			return "/cadastroUsuario";	
+		}
 		usuarioDAO.create(usuario);
 		return "redirect:/prepararListarUsuario";
 	}

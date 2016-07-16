@@ -5,23 +5,34 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.unipe.gerenciamentoAdvogados.model.TipoPessoa;
 
 @Entity
 public class Usuario extends EntityMaster {
 
+	@NotEmpty
 	private String nome;
+	
+	@Email
 	private String email;
+	
+	@NotEmpty
 	private String telefone;
+	
+	@NotEmpty
 	private String username;
+	
+	@NotEmpty
 	private String password;
+	
+	@Future
+	private Date dataNascimento;
 
 	@Enumerated(EnumType.STRING)
 	private TipoPessoa tipoPessoa;
@@ -75,6 +86,22 @@ public class Usuario extends EntityMaster {
 
 	public void setAutorizacao(Autorizacao autorizacao) {
 		this.autorizacao = autorizacao;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public TipoPessoa getTipoPessoa() {
+		return tipoPessoa;
+	}
+
+	public void setTipoPessoa(TipoPessoa tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
 	}
 
 }

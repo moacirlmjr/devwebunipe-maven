@@ -9,6 +9,8 @@
 		modelAttribute="autorizacao">
 		Nome:
 		<form:input path="nome" />
+		<form:errors path="nome"/>
+		
 		<br />
 		<input type="submit" value="Enviar" />
 	</form:form>

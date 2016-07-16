@@ -2,15 +2,21 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd 
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-4.1.xsd">
 
 	<context:component-scan base-package="br.com.unipe.gerenciamentoAdvogados">
 	</context:component-scan>
+
+	<task:scheduler id="taskScheduler" />
+
+	<task:annotation-driven />
 
 	<mvc:annotation-driven />
 	<bean
@@ -18,5 +24,48 @@
 		<property name="prefix" value="/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="GerenciamentoDeAdvogados" />
+		<property name="dataSource" ref="postgresDataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+	</bean>
+
+	<bean id="postgresDataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/advogados" />
+		<property name="username" value="postgres" />
+		<property name="password" value="mv13wavaty" />
+	</bean>
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<tx:annotation-driven />
+
+
+	<sec:http auto-config="true">
+		<sec:csrf disabled="true" />
+		<sec:intercept-url pattern="/index.jsp" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/login.jsp" access="permitAll" />
+		<sec:intercept-url pattern="/*" access="isAuthenticated()" />
+		<sec:form-login login-page="/login.jsp"
+			default-target-url="/index.jsp" login-processing-url="/j_spring_security_check"
+			authentication-failure-url="/login.jsp?erro=true" />
+		<sec:logout invalidate-session="true" logout-url="/j_spring_security_logout" />
+	</sec:http>
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+			<sec:jdbc-user-service data-source-ref="postgresDataSource"
+				users-by-username-query="SELECT u.username as username, 
+				u.password as password, true FROM Usuario u WHERE u.username=?"
+				authorities-by-username-query="SELECT u.username as username, 
+				CONCAT('ROLE_',a.nome) as authority FROM Autorizacao a, Usuario u 
+				WHERE u.username=? and u.autorizacao_id = a.id" />
+		</sec:authentication-provider>
+	</sec:authentication-manager>
 
 </beans>

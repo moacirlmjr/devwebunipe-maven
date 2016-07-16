@@ -3,8 +3,10 @@ package br.com.unipe.gerenciamentoAdvogados.model.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.unipe.gerenciamentoAdvogados.model.util.EntityManagerUtil;
 import br.com.unipe.gerenciamentoAdvogados.model.vo.Autorizacao;
@@ -12,96 +14,39 @@ import br.com.unipe.gerenciamentoAdvogados.model.vo.Autorizacao;
 @Repository
 public class AutorizacaoDAOImpl implements AutorizacaoDAO {
 
+	@PersistenceContext
+	protected EntityManager em;
+
+	@Transactional
 	public void create(Autorizacao autorizacao) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.persist(autorizacao);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
+		em.persist(autorizacao);
 	}
 
+	@Transactional
 	public void update(Autorizacao autorizacao) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.merge(autorizacao);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
+		em.merge(autorizacao);
 	}
 
+	@Transactional
 	public void update2(Autorizacao autorizacao) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			Autorizacao authBD = em.find(Autorizacao.class, autorizacao.getId());
-			authBD.setCreatedOn(autorizacao.getCreatedOn());
-			authBD.setNome(autorizacao.getNome());
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
+		Autorizacao authBD = em.find(Autorizacao.class, autorizacao.getId());
+		authBD.setCreatedOn(autorizacao.getCreatedOn());
+		authBD.setNome(autorizacao.getNome());
 	}
 
+	@Transactional
 	public void delete(Autorizacao autorizacao) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.remove(em.contains(autorizacao) ? autorizacao : em.merge(autorizacao));
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
+		em.remove(em.contains(autorizacao) ? autorizacao : em.merge(autorizacao));
 	}
 
+	@Transactional(readOnly = true)
 	public Autorizacao findById(Long id) {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			return em.find(Autorizacao.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-		return null;
+		return em.find(Autorizacao.class, id);
 	}
 
+	@Transactional(readOnly = true)
 	public List<Autorizacao> listAll() {
-		EntityManager em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			return em.createQuery("From Autorizacao a").getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-		return null;
+		return em.createQuery("From Autorizacao a").getResultList();
 	}
 
 }
